@@ -63,15 +63,21 @@ public class TestingApp
         System.out.println("Last Event: " );
         inac.getLast().displayEvent();
         System.out.println("");
-        System.out.println("Printing Range from: " + NUM_START + " to " + (NUM_START+RANGE-1) + ".");
-        inac.printRange(NUM_START, RANGE);
-        System.out.println("");
+        
+        // @Trevor Elwell removed these tests on 4/12.
+        // Let's focus on doing these tests many more times
+        // to get a better idea of which structure performs better.
+        // 
+        // System.out.println("Printing Range from: " + NUM_START + " to " + (NUM_START+RANGE-1) + ".");
+        // inac.printRange(NUM_START, RANGE);
+        // System.out.println("");
+        
         System.out.println("****** Begining Improved Nested Array Calendar Timed Tests **********");
         System.out.println("");
         System.out.println("Insert Single Event Test:");
         System.out.println("Inserting Event Timed 1234567");
         startTime = System.nanoTime();
-        inac.insertEvent(testEvent);
+        inac.insertEvent(testEvent); 
         stopTime = System.nanoTime();
         System.out.println("There are now: " + inac.getTotalEvents() + " events in the calendar.");
         System.out.println("It took: " + ((stopTime - startTime)/1000)+ " microS to insert a single event");
