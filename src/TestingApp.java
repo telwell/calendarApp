@@ -203,7 +203,7 @@ public class TestingApp
         
         stopTime = System.currentTimeMillis();
         System.out.println("There are now: " + llc.getTotalEvents() + " events in the calendar.");
-        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to insert a single event");
+        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to insert 1_000 events");
         System.out.println("");
         
         System.out.println("Find 1_000 Events Test:");
