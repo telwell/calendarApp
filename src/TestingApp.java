@@ -12,6 +12,7 @@ import java.util.*;
  * in sequence, using a randomizer.
  * 
  * @author David McLellan
+ * @author Trevor Elwell
  * @version 7 APRIL 2016
  */
 public class TestingApp
@@ -20,6 +21,7 @@ public class TestingApp
     private static ImpNestedArrayCalendar inac = new ImpNestedArrayCalendar();
     private static NestedArrayCalendar nac = new NestedArrayCalendar();
     private static LinkedListCalendar llc = new LinkedListCalendar();
+    private static RandomList randoms = new RandomList();
     
     // Creates randomizer object and supporting variables.
     private static Random rnd = new Random();
@@ -36,8 +38,8 @@ public class TestingApp
     {
         // Runs calendar tests in order.
         inacTest();
-        nacTest();
-        llcTest();
+        // UNCOMMENT: nacTest();
+        // UNCOMMENT: llcTest();
     }
     
     /*
@@ -74,28 +76,43 @@ public class TestingApp
         
         System.out.println("****** Begining Improved Nested Array Calendar Timed Tests **********");
         System.out.println("");
-        System.out.println("Insert Single Event Test:");
-        System.out.println("Inserting Event Timed 1234567");
-        startTime = System.nanoTime();
-        inac.insertEvent(testEvent); 
-        stopTime = System.nanoTime();
+        System.out.println("Insert 1_000 Events Test:");
+        System.out.println("Inserting 1_000 Test Events");
+        startTime = System.currentTimeMillis();
+        // Insert an event 1000 times
+        for (int i=0; i<randoms.getCount(); i++) {
+        	int[] event = {0,randoms.getRandom(i),1,1,1,0};
+        	inac.insertEvent(event);
+        }
+        stopTime = System.currentTimeMillis();
+
         System.out.println("There are now: " + inac.getTotalEvents() + " events in the calendar.");
-        System.out.println("It took: " + ((stopTime - startTime)/1000)+ " microS to insert a single event");
+        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to insert 1000 events");
         System.out.println("");
-        System.out.println("Find Single Event Test:");
-        System.out.println("Finding Event Timed 1234567");
+        System.out.println("Find 1_000 Events Test:");
+        System.out.println("Finding 1_000 Random Events");
         startTime = System.nanoTime();
-        inac.findEvent(1234567);
+        
+        // FIND our 1_000 random events
+        for (int i=0; i<randoms.getCount(); i++) {;
+        	inac.findEvent(randoms.getRandom(i));
+        }
+
         stopTime = System.nanoTime();
-        System.out.println("It took: " + ((stopTime - startTime)/1000)+ " microS to find a single event");
+
+        System.out.println("It took: " + ((stopTime - startTime)/1000)+ " microS to find a 1_000 events");
         System.out.println("");
-        System.out.println("Delete Single Event Test:");
-        System.out.println("Deleting Event Timed 1234567");
-        startTime = System.nanoTime();
-        inac.deleteEvent(1234567);
-        stopTime = System.nanoTime();
+        System.out.println("Delete 1_000 Event Test:");
+        System.out.println("Deleting 1_000 Random Events");
+        startTime = System.currentTimeMillis();
+
+        for (int i=0; i<randoms.getCount(); i++) {
+					inac.deleteEvent(randoms.getRandom(i));        	
+        }
+        
+        stopTime = System.currentTimeMillis();
         System.out.println("There are now: " + inac.getTotalEvents() + " events in the calendar.");
-        System.out.println("It took: " + ((stopTime - startTime)/1000)+ " microS to delete a single event");
+        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to delete a 1_000 events");
         System.out.println("");
         System.out.println("Traverse and Generate Report of All Events Test:");
         startTime = System.nanoTime();

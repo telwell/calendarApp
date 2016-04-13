@@ -6,13 +6,14 @@
  * of linear search.
  * 
  * @author David McLellan
+ * @author Trevor Elwell
  * @version 7 APRIL 2016
  */
 public class ImpNestedArrayCalendar extends Object
 {
     private int count;
     private EventArray[] calendar;
-    private final int MAX_SIZE = 1000100;
+    private final int MAX_SIZE = 1002000;
     
     public ImpNestedArrayCalendar()
     {
@@ -132,7 +133,6 @@ public class ImpNestedArrayCalendar extends Object
             calendar[k] = calendar[k + 1];
         }
         count--;
-        System.out.println("Deleted Event: " + key);
         return true;
     }
     
