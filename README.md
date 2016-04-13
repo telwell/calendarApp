@@ -5,7 +5,8 @@ Basic information for this testing application will go here.
 # Testing Output
 
 Here is an example output from running the TestingApp: 
-`****** Begining Improved Nested Array Calendar Loading Test **********
+```java
+****** Begining Improved Nested Array Calendar Loading Test **********
 
 Running Initial Test on 1000000 events.
 It took: 538 mS to load 1000000 events.
@@ -116,7 +117,8 @@ Traverse and Generate Report of All Events Test:
 
 It took: 22431 microS to traverse calendar and generate report
 
-****** Ending Linked List Calendar Loading Test **********`
+****** Ending Linked List Calendar Loading Test **********
+```
 
 # Contributors
 
