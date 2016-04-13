@@ -6,13 +6,14 @@
  * of the improved binary search.
  * 
  * @author David McLellan
+ * @author Trevor Elwell
  * @version 7 APRIL 2016
  */
 public class NestedArrayCalendar
 {
     private int count;
     private EventArray[] calendar;
-    private final int MAX_SIZE = 1000100;
+    private final int MAX_SIZE = 1002000;
     
     public NestedArrayCalendar()
     {
@@ -150,7 +151,6 @@ public class NestedArrayCalendar
         }
         else
         {
-            calendar[index].displayEvent();
             return calendar[index];
         }
     }

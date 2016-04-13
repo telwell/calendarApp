@@ -1,5 +1,19 @@
 import java.util.Random;
 
+/**
+ * Generate an array of Random
+ * numbers which we'll use to test
+ * our application. 
+ * TODO: Right now this just builds 
+ * an array of 1_000 random ints, we
+ * should convert this to a CONST in 
+ * the next version.
+ * 
+ * @author David McLellan
+ * @author Trevor Elwell
+ * @version 12 April 2016
+ */
+
 public class RandomList {
 
     public static int[] randoms;

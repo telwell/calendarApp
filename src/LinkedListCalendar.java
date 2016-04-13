@@ -3,6 +3,7 @@
  * linked list calendar.
  * 
  * @author David McLellan
+ * @author Trevor Elwell
  * @version 7 APRIL 2016
  */
 public class LinkedListCalendar 
@@ -159,9 +160,6 @@ public class LinkedListCalendar
                 return null;
             }
         }
-        System.out.println("Found Event " + key + " at position " + counter +
-            " of " + numberOfLinks + ".");
-        current.displayEventLink();
         return current;
     }
     
