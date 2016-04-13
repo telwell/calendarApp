@@ -142,14 +142,14 @@ public class TestingApp
 
         System.out.println("Find 1_000 Events Test:");
         System.out.println("Finding 1_000 Random Events");
-        startTime = System.nanoTime();
+        startTime = System.currentTimeMillis();
         
         for (int i=0; i<randoms.getCount(); i++) {
 					nac.findEvent(randoms.getRandom(i));        	
         }
         
-        stopTime = System.nanoTime();
-        System.out.println("It took: " + ((stopTime - startTime)/1000)+ " microS to find a 1_000 events");
+        stopTime = System.currentTimeMillis();
+        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to find a 1_000 events");
         System.out.println("");
 
         System.out.println("Delete 1_000 Events Test:");
