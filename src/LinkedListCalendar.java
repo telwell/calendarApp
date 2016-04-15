@@ -1,3 +1,6 @@
+
+import java.util.Iterator;
+
 /**
  * This class holds event data for use in the 
  * linked list calendar.
@@ -6,7 +9,7 @@
  * @author Trevor Elwell
  * @version 7 APRIL 2016
  */
-public class LinkedListCalendar 
+public class LinkedListCalendar extends BaseCalendar
 {
     private EventLink first;
     private EventLink last;
@@ -19,21 +22,25 @@ public class LinkedListCalendar
         numberOfLinks = 0;
     }
     
+    @Override
     public boolean isEmpty()
     {
         return (first == null);
     }
     
+    @Override
     public int getTotalEvents()
     {
         return numberOfLinks;
     }
     
+    @Override
     public EventLink getFirst()
     {
         return first;
     }
     
+    @Override
     public EventLink getLast()
     {
         return last;
@@ -44,6 +51,7 @@ public class LinkedListCalendar
      * 
      * @param  event   Takes randomized data in array form
      */
+    @Override
     public void loadEvent(int[] event)
     {
         EventLink newLink = new EventLink(event);
@@ -67,6 +75,7 @@ public class LinkedListCalendar
      * 
      * @param  event   Takes single event data in array form
      */
+    @Override
     public void insertEvent(int[] event)
     {
         EventLink newLink = new EventLink(event);
@@ -100,6 +109,7 @@ public class LinkedListCalendar
      * @param  key   Clock time of specific event.
      * @return     Reference to deleted event.
      */
+    @Override
     public EventLink deleteEvent(int key)
     {
         EventLink current = first;
@@ -139,6 +149,7 @@ public class LinkedListCalendar
      * @param  key   Clock time of specific event.
      * @return     Reference to found event.
      */
+    @Override
     public EventLink findEvent(int key)
     {
         if (isEmpty())
@@ -170,6 +181,7 @@ public class LinkedListCalendar
      * @param  start   The sequential event number to start with.
      * @param  range   The number of event records to print.
      */
+    @Override
     public void printRange(int start, int range)
     {
         int counter = 0;
@@ -191,7 +203,7 @@ public class LinkedListCalendar
             for (int i = 0; i < range; i++)
             {
                 System.out.println("Displaying link " + (start + i) + ".");
-                current.displayEventLink();
+                current.displayEvent();
                 current = current.getNext();
             }
         }
@@ -200,54 +212,27 @@ public class LinkedListCalendar
             System.out.println("Your range is not contained in the calendar list.");
         }
     }
-    
-    /*
-     * Print Report traverses all the events held in the calendar
-     * and talleys each type of the UNIT DOWN events and creates
-     * and prints a report of the events by type.
-     */
-    public void printReport()
-    {
-        int forced = 0;
-        int maintenance = 0;
-        int installation = 0;
-        int removed = 0;
-        int random = 0;
-        EventLink current = first;
-        
-        while(current != null)
-        {
-            switch(current.getType())
-            {
-                case 1:
-                    forced++;
-                    break;
-                case 2:
-                    maintenance++;
-                    break;
-                case 3:
-                    installation++;
-                    break;
-                case 4:
-                    removed++;
-                    break;
-                case 5:
-                    random++;
-                    break;
-            }
-            current = current.getNext();
-        }
-        
-        System.out.println("*******************************************");
-        System.out.println("* Calendar System Report");
-        System.out.println("*******************************************");
-        System.out.println("* Total Calendar Events: " + numberOfLinks);
-        System.out.println("* Forced Outages:        " + forced);
-        System.out.println("* Maintenance Outages:   " + maintenance);
-        System.out.println("* Unit Installations:    " + installation);
-        System.out.println("* Unit Removals:         " + removed);
-        System.out.println("* Random Outages:        " + random);
-        System.out.println("*******************************************");
-        System.out.println("");
+
+    @Override
+    protected Iterable<EventLink> getIterator() {
+        return () -> {
+            Iterator<EventLink> it = new Iterator<EventLink>() {
+                EventLink current =getFirst();
+                @Override
+                public boolean hasNext() {
+                    return current != null;
+                }
+                
+                @Override
+                public EventLink next() {
+                    EventLink ret = current;
+                    current = current.getNext();
+                    return ret;
+                }
+            };
+            return it;
+        };
+
     }
+    
 }
