@@ -9,7 +9,6 @@ import java.util.Random;
  * should convert this to a CONST in 
  * the next version.
  * 
- * @author David McLellan
  * @author Trevor Elwell
  * @version 12 April 2016
  */

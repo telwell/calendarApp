@@ -32,9 +32,6 @@ public class TestingApp
     private static long startTime;
     private static long stopTime;
     
-    // Creates single event to be used in each test.
-    private static int[] testEvent = {0,1234567,1,1,1,0};
-    
     public static void main(String[] args)
     {
         // Runs calendar tests in order.
