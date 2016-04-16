@@ -5,7 +5,7 @@
  * @author David McLellan
  * @version 7 APRIL 2016
  */
-public class EventLink
+public class EventLink extends BaseEvent
 {
     /*
      * Instance variables - Same as original but changing to support
@@ -33,35 +33,13 @@ public class EventLink
         field_status = event[4];
         this.event = event;
     }
-    
-   
-    public void displayEventLink()
-    {
-        String[] CURRENT_TYPE = {"FORCED OUTAGE", "MAINTENANCE",
-            "INSTALLATION", "REMOVED", "RANDOM OUTAGE", "OPERATIONAL"};
-        String currentType = CURRENT_TYPE[field_type];
         
-        String[] CURRENT_STATUS = {"OFFLINE", "RUNNING"};
-        String currentStatus = CURRENT_STATUS[field_status];
-        
-        String clock = String.format ("%08d", field_clock);
-        
-        System.out.println("");
-        System.out.println("****************************************");
-        System.out.println("* Event Data Elements");
-        System.out.println("* Field Clock (KEY):  " + clock);
-        System.out.println("* Field Type:         " + currentType);
-        System.out.println("* Field Unit:         " + field_unit);
-        System.out.println("* Field Status:       " + currentStatus);
-        System.out.println("****************************************");
-        System.out.println("");
-    }
-    
     public int getKey()
     {
         return field_clock;
     }
     
+    @Override
     public int getType()
     {
         return field_type;
@@ -77,6 +55,7 @@ public class EventLink
         this.previous = previous;
     }
     
+    @Override
     public EventLink getNext()
     {
         return next;
@@ -85,5 +64,20 @@ public class EventLink
     public void setNext(EventLink next)
     {
         this.next = next;
+    }
+
+    @Override
+    protected int getStatus() {
+        return field_status;
+    }
+
+    @Override
+    protected int getClock() {
+        return field_clock;
+    }
+
+    @Override
+    protected int getUnit() {
+        return field_unit;
     }
 }

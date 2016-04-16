@@ -1,3 +1,6 @@
+
+import java.util.Iterator;
+
 /**
  * This class holds event data for use in the 
  * Nested Array calendar.
@@ -9,10 +12,10 @@
  * @author Trevor Elwell
  * @version 7 APRIL 2016
  */
-public class NestedArrayCalendar
+public class NestedArrayCalendar extends BaseCalendar
 {
-    private int count;
-    private EventArray[] calendar;
+    protected int count;
+    protected EventArray[] calendar;
     private final int MAX_SIZE = 1002000;
     
     public NestedArrayCalendar()
@@ -21,11 +24,13 @@ public class NestedArrayCalendar
         calendar = new EventArray[MAX_SIZE];
     }
     
+    @Override
     public boolean isEmpty()
     {
         return(count == 0);
     }
     
+    @Override
     public int getTotalEvents()
     {
         return count;
@@ -36,6 +41,7 @@ public class NestedArrayCalendar
      * 
      * @param  event   Takes randomized data in array form
      */
+    @Override
     public void loadEvent(int[] event)
     {
         if (count < MAX_SIZE)
@@ -56,6 +62,7 @@ public class NestedArrayCalendar
      * 
      * @param  event   Takes single event data in array form
      */
+    @Override
     public void insertEvent(int[] event)
     {
         if (count < MAX_SIZE)
@@ -96,7 +103,8 @@ public class NestedArrayCalendar
      * @param  key   Clock time of specific event.
      * @return     Reference to deleted event.
      */
-    public boolean deleteEvent(int key)
+    @Override
+    public EventArray deleteEvent(int key)
     {
         int index = 0;
         
@@ -110,16 +118,17 @@ public class NestedArrayCalendar
         
         if (index == count)
         {
-            return false;
+            return null;
         }
         else
         {
+            EventArray event = new EventArray(calendar[index].getEventArray());
             for (int k = index; k < count; k++)
             {
                 calendar[k] = calendar[k + 1];
             }
             count--;
-            return true;
+            return event;
         }
     }
     
@@ -133,6 +142,7 @@ public class NestedArrayCalendar
      * @param  key   Clock time of specific event.
      * @return     Reference to found event.
      */
+    @Override
     public EventArray findEvent(int key)
     {
         int index = 0;
@@ -155,11 +165,13 @@ public class NestedArrayCalendar
         }
     }
     
+    @Override
     public EventArray getFirst()
     {
         return calendar[0];
     }
     
+    @Override
     public EventArray getLast()
     {
         return calendar[count - 1];
@@ -172,6 +184,7 @@ public class NestedArrayCalendar
      * @param  start   The sequential event number to start with.
      * @param  range   The number of event records to print.
      */
+    @Override
     public void printRange(int start, int range)
     {
         int counter = 0;
@@ -189,52 +202,24 @@ public class NestedArrayCalendar
             System.out.println("Your range is not contained in the calendar.");
         }
     }
-    
-    /*
-     * Print Report traverses all the events held in the calendar
-     * and talleys each type of the UNIT DOWN events and creates
-     * and prints a report of the events by type.
-     */
-    public void printReport()
-    {
-        int forced = 0;
-        int maintenance = 0;
-        int installation = 0;
-        int removed = 0;
-        int random = 0;
-        
-        for (int i = 0; i < count; i++)
-        {
-            switch(calendar[i].getType())
-            {
-                case 1:
-                    forced++;
-                    break;
-                case 2:
-                    maintenance++;
-                    break;
-                case 3:
-                    installation++;
-                    break;
-                case 4:
-                    removed++;
-                    break;
-                case 5:
-                    random++;
-                    break;
-            }
-        }
-        
-        System.out.println("*******************************************");
-        System.out.println("* Calendar System Report");
-        System.out.println("*******************************************");
-        System.out.println("* Total Calendar Events: " + count);
-        System.out.println("* Forced Outages:        " + forced);
-        System.out.println("* Maintenance Outages:   " + maintenance);
-        System.out.println("* Unit Installations:    " + installation);
-        System.out.println("* Unit Removals:         " + removed);
-        System.out.println("* Random Outages:        " + random);
-        System.out.println("*******************************************");
-        System.out.println("");
+
+    @Override
+    protected Iterable<EventArray> getIterator() {
+        return () -> {
+            Iterator<EventArray> it = new Iterator<EventArray>() {
+                int idx = 0;
+
+                @Override
+                public boolean hasNext() {
+                    return idx < count;
+                }
+
+                @Override
+                public EventArray next() {
+                    return calendar[idx++];
+                }
+            };
+            return it;
+        };
     }
 }

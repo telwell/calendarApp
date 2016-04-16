@@ -16,35 +16,33 @@ import java.util.Random;
 
 public class RandomList {
 
-    public static int[] randoms;
+    public int[] randoms;
+    private final Random rand;
 
-    public RandomList() {
+    public RandomList(long seed) {
     	randoms = new int[1000];
+        this.rand = new Random(seed);
     	randomFill();
     }
 
-    public static void randomFill() {
+    public final void randomFill() {
     	for (int i=0; i<randoms.length; i++) {
-    		Random rand = new Random();
-		    int randomNum = rand.nextInt(1000000);
-		    randoms[i] = randomNum;
+            int randomNum = rand.nextInt(1000000);
+            randoms[i] = randomNum;
     	}
     }
 
-    public static int getCount() {
+    public int getCount() {
     	return randoms.length;
     }
 
-    public static int getRandom(int i) {
+    public int getRandom(int i) {
     	return randoms[i];
     }
 
-    public static void print(){
-			for(int n: randoms){
-				System.out.println(n+" ");
-			}
-    }
-
-    public static void main( String[] args ) {
+    public void print(){
+        for(int n: randoms){
+            System.out.println(n+" ");
+        }
     }
 }

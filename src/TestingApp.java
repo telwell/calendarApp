@@ -21,10 +21,11 @@ public class TestingApp
     private static ImpNestedArrayCalendar inac = new ImpNestedArrayCalendar();
     private static NestedArrayCalendar nac = new NestedArrayCalendar();
     private static LinkedListCalendar llc = new LinkedListCalendar();
-    private static RandomList randoms = new RandomList();
+    private static RandomList randoms = new RandomList(235387522);
     
     // Creates randomizer object and supporting variables.
     private static Random rnd = new Random();
+    private static final long SEED = 846195035;
     private static int NUM_LINKS_TO_TEST = 1000000;
     private static int NUM_START = 1000;
     private static int RANGE = 6;
@@ -37,9 +38,57 @@ public class TestingApp
     public static void main(String[] args)
     {
         // Runs calendar tests in order.
-        inacTest();
-        nacTest();
-        llcTest();
+        rnd.setSeed(SEED);
+        runTest(new CalendarTestData() {
+            @Override
+            public String getTestName() {
+                return "Improved Nested Array Calendar";
+            }
+
+            @Override
+            public void runRandomizer() {
+                inacRandomizer(NUM_LINKS_TO_TEST);
+            }
+
+            @Override
+            public BaseCalendar getCalendar() {
+                return inac;
+            }
+        });
+        rnd.setSeed(SEED);
+        runTest(new CalendarTestData() {
+            @Override
+            public String getTestName() {
+                return "Nested Array Calendar";
+            }
+
+            @Override
+            public void runRandomizer() {
+                nacRandomizer(NUM_LINKS_TO_TEST);
+            }
+
+            @Override
+            public BaseCalendar getCalendar() {
+                return nac;
+            }
+        });
+        rnd.setSeed(SEED);
+        runTest(new CalendarTestData() {
+            @Override
+            public String getTestName() {
+                return "Linked List Calendar";
+            }
+
+            @Override
+            public void runRandomizer() {
+                llcRandomizer(NUM_LINKS_TO_TEST);
+            }
+
+            @Override
+            public BaseCalendar getCalendar() {
+                return llc;
+            }
+        });
     }
     
     /*
@@ -47,16 +96,16 @@ public class TestingApp
      * by calling the randomizer to initially load the 
      * calendar with a set number of events.
      */
-    public static void inacTest()
+    public static void runTest(CalendarTestData testData)
     {
         System.out.println("");
-        System.out.println("****** Begining Improved Nested Array Calendar Loading Test **********");
+        System.out.println("****** Begining " + testData.getTestName() + " Loading Test **********");
         System.out.println("");
         System.out.println("Running Initial Test on " + NUM_LINKS_TO_TEST + " events.");
         startTime = System.currentTimeMillis();
-        inacRandomizer(NUM_LINKS_TO_TEST);
+        testData.runRandomizer();
         stopTime = System.currentTimeMillis();
-        System.out.println("It took: " + (stopTime - startTime)+ " mS to load " + inac.getTotalEvents()+ " events.");
+        System.out.println("It took: " + (stopTime - startTime)+ " mS to load " + testData.getCalendar().getTotalEvents()+ " events.");
         System.out.println("");
         System.out.println("****** Begining Improved Nested Array Calendar Timed Tests **********");
         System.out.println("");
@@ -66,11 +115,11 @@ public class TestingApp
         // Insert an event 1000 times
         for (int i=0; i<randoms.getCount(); i++) {
         	int[] event = {0,randoms.getRandom(i),1,1,1,0};
-        	inac.insertEvent(event);
+        	testData.getCalendar().insertEvent(event);
         }
         stopTime = System.currentTimeMillis();
 
-        System.out.println("There are now: " + inac.getTotalEvents() + " events in the calendar.");
+        System.out.println("There are now: " + testData.getCalendar().getTotalEvents() + " events in the calendar.");
         System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to insert 1000 events");
         System.out.println("");
         System.out.println("Find 1_000 Events Test:");
@@ -79,7 +128,7 @@ public class TestingApp
         
         // FIND our 1_000 random events
         for (int i=0; i<randoms.getCount(); i++) {;
-        	inac.findEvent(randoms.getRandom(i));
+        	testData.getCalendar().findEvent(randoms.getRandom(i));
         }
 
         stopTime = System.nanoTime();
@@ -91,152 +140,20 @@ public class TestingApp
         startTime = System.currentTimeMillis();
 
         for (int i=0; i<randoms.getCount(); i++) {
-					inac.deleteEvent(randoms.getRandom(i));        	
+					testData.getCalendar().deleteEvent(randoms.getRandom(i));        	
         }
         
         stopTime = System.currentTimeMillis();
-        System.out.println("There are now: " + inac.getTotalEvents() + " events in the calendar.");
+        System.out.println("There are now: " + testData.getCalendar().getTotalEvents() + " events in the calendar.");
         System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to delete 1_000 events");
         System.out.println("");
         System.out.println("Traverse and Generate Report of All Events Test:");
         startTime = System.nanoTime();
-        inac.printReport();
+        testData.getCalendar().printReport();
         stopTime = System.nanoTime();
         System.out.println("It took: " + ((stopTime - startTime)/1000)+ " microS to traverse calendar and generate report");
         System.out.println("");
         System.out.println("****** Ending Improved Nested Array Calendar Loading Test **********");
-        System.out.println("");
-    }
-    
-    /*
-     * Tests each function of the specific calendar type
-     * by calling the randomizer to initially load the 
-     * calendar with a set number of events.
-     */
-    public static void nacTest()
-    {
-        System.out.println("");
-        System.out.println("****** Begining Nested Array Calendar Loading Test **********");
-        System.out.println("");
-        System.out.println("Running Initial Test on " + NUM_LINKS_TO_TEST + " events.");
-        startTime = System.currentTimeMillis();
-        nacRandomizer(NUM_LINKS_TO_TEST);
-        stopTime = System.currentTimeMillis();
-        System.out.println("It took: " + (stopTime - startTime)+ " mS to load " + nac.getTotalEvents()+ " events.");
-        System.out.println("");
-        System.out.println("****** Begining Nested Array Calendar Timed Tests **********");
-        System.out.println("");
-        System.out.println("Insert 1_000 Event Test:");
-        System.out.println("Inserting 1_000 Random Events");
-        startTime = System.currentTimeMillis();
-        
-        for (int i=0; i<randoms.getCount(); i++) {
-        	int[] event = {0,randoms.getRandom(i),1,1,1,0};
-        	nac.insertEvent(event);
-        }
-
-        stopTime = System.currentTimeMillis();
-        System.out.println("There are now: " + nac.getTotalEvents() + " events in the calendar.");
-        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to insert a 1_000 events");
-        System.out.println("");
-
-        System.out.println("Find 1_000 Events Test:");
-        System.out.println("Finding 1_000 Random Events");
-        startTime = System.currentTimeMillis();
-        
-        for (int i=0; i<randoms.getCount(); i++) {
-					nac.findEvent(randoms.getRandom(i));        	
-        }
-        
-        stopTime = System.currentTimeMillis();
-        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to find a 1_000 events");
-        System.out.println("");
-
-        System.out.println("Delete 1_000 Events Test:");
-        System.out.println("Deleting 1_000 Random Events");
-        startTime = System.currentTimeMillis();
-        
-        for (int i=0; i<randoms.getCount(); i++) {
-        	nac.deleteEvent(randoms.getRandom(i));	
-        }
-        
-        stopTime = System.currentTimeMillis();
-        System.out.println("There are now: " + nac.getTotalEvents() + " events in the calendar.");
-        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to delete 1_000 events");
-        System.out.println("");
-        System.out.println("Traverse and Generate Report of All Events Test:");
-        startTime = System.nanoTime();
-        nac.printReport();
-        stopTime = System.nanoTime();
-        System.out.println("It took: " + ((stopTime - startTime)/1000)+ " microS to traverse calendar and generate report");
-        System.out.println("");
-        System.out.println("****** Ending Nested Array Calendar Loading Test **********");
-        System.out.println("");
-    }
-    
-    /*
-     * Tests each function of the specific calendar type
-     * by calling the randomizer to initially load the 
-     * calendar with a set number of events.
-     */
-    public static void llcTest()
-    {
-        System.out.println("");
-        System.out.println("****** Begining Linked List Calendar Loading Test **********");
-        System.out.println("");
-        System.out.println("Running Initial Test on " + NUM_LINKS_TO_TEST + " events.");
-        startTime = System.currentTimeMillis();
-        llcRandomizer(NUM_LINKS_TO_TEST);
-        stopTime = System.currentTimeMillis();
-        System.out.println("It took: " + (stopTime - startTime)+ " mS to load " + llc.getTotalEvents()+ " events.");
-        System.out.println("");
-        System.out.println("****** Begining Linked List Calendar Timed Tests **********");
-        System.out.println("");
-        System.out.println("Insert 1_000 Events Test:");
-        System.out.println("Inserting 1_000 Random Events");
-        startTime = System.currentTimeMillis();
-        
-        for (int i=0; i<randoms.getCount(); i++) {
-        	int[] event = {0,randoms.getRandom(i),1,1,1,0};
-        	llc.insertEvent(event);	
-        }
-        
-        stopTime = System.currentTimeMillis();
-        System.out.println("There are now: " + llc.getTotalEvents() + " events in the calendar.");
-        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to insert 1_000 events");
-        System.out.println("");
-        
-        System.out.println("Find 1_000 Events Test:");
-        System.out.println("Finding 1_000 Random Events");
-        startTime = System.currentTimeMillis();
-        
-        for (int i=0; i<randoms.getCount(); i++) {
-        	llc.findEvent(randoms.getRandom(i));	
-        }
-        
-        stopTime = System.currentTimeMillis();
-        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to find 1_000 events");
-        System.out.println("");
-
-        System.out.println("Delete 1_000 Events Test:");
-        System.out.println("Deleting 1_000 Random Events");
-        startTime = System.currentTimeMillis();
-        
-        for (int i=0; i<randoms.getCount(); i++) {
-        	llc.deleteEvent(randoms.getRandom(i));	
-        }
-        
-        stopTime = System.currentTimeMillis();
-        System.out.println("There are now: " + llc.getTotalEvents() + " events in the calendar.");
-        System.out.println("It took: " + ((stopTime - startTime))+ " milliseconds to delete 1_000 events");
-        System.out.println("");
-        System.out.println("Traverse and Generate Report of All Events Test:");
-        startTime = System.nanoTime();
-        llc.printReport();
-        stopTime = System.nanoTime();
-        System.out.println("It took: " + ((stopTime - startTime)/1000)+ " microS to traverse calendar and generate report");
-        System.out.println("");
-        System.out.println("****** Ending Linked List Calendar Loading Test **********");
         System.out.println("");
     }
     
@@ -319,5 +236,14 @@ public class TestingApp
             
             llc.loadEvent(event);
         }
+    }
+
+    private interface CalendarTestData {
+
+        public String getTestName();
+
+        public void runRandomizer();
+
+        public BaseCalendar getCalendar();
     }
 }
